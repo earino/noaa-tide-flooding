@@ -1,0 +1,221 @@
+{
+  "coverage": {
+    "command": "code/build.py (worker job noaa-003); evidence output/build_summary.json",
+    "stations_expected": 122,
+    "stations_built": 122,
+    "station_years_expected": 2440,
+    "station_years_fetched": 2440,
+    "missing_station_years": 0,
+    "note": "Coverage is a hard condition, not an observation: the builder exits non-zero on a single lost station-year, so an incomplete panel cannot be scored as the frozen one.",
+    "requests": 4880,
+    "errors": 0
+  },
+  "extraction_cost": {
+    "requests": 4880,
+    "requests_per_station_year": 2,
+    "route": "daily_max_min features + HTF daily flags, one request each per station-year",
+    "bytes_approx": 184000000,
+    "wall_clock_seconds": 1626.6,
+    "machine": "2 vCPU / 2 GB worker (cpx32, Helsinki)",
+    "credential_required": false,
+    "note": "The route matters: the raw 6-minute series would have been 29,160 requests and about 15.2 GiB. One request per station-year per product is 4,880 requests and about 184 MB, and it is the publisher's own verified product."
+  },
+  "day_quality": "879,034 days; 622 incomplete (kept and counted); 5,239 flagged",
+  "levels": {
+    "temporal": {
+      "train": {
+        "rows": 697373,
+        "positives": 11774,
+        "stations": 122,
+        "positive_rate": 0.01688
+      },
+      "eval": {
+        "rows": 89038,
+        "positives": 1815,
+        "stations": 122,
+        "positive_rate": 0.02038
+      },
+      "holdout": {
+        "rows": 88841,
+        "positives": 2850,
+        "stations": 122,
+        "positive_rate": 0.03208
+      }
+    },
+    "station_disjoint": {
+      "train": {
+        "rows": 461580,
+        "positives": 7513,
+        "stations": 81,
+        "positive_rate": 0.01628
+      },
+      "eval": {
+        "rows": 29930,
+        "positives": 788,
+        "stations": 41,
+        "positive_rate": 0.02633
+      },
+      "holdout": {
+        "rows": 29930,
+        "positives": 1090,
+        "stations": 41,
+        "positive_rate": 0.03642
+      }
+    }
+  },
+  "capacity_measured_before_build": {
+    "temporal_positives": {
+      "train": 11886,
+      "eval": 1828,
+      "holdout": 2850
+    },
+    "station_disjoint_positives": {
+      "eval": 792,
+      "holdout": 1090
+    },
+    "independent_events": {
+      "temporal_eval": 332,
+      "temporal_holdout": 427,
+      "station_disjoint_eval": 298,
+      "station_disjoint_holdout": 337
+    },
+    "evidence": "spatial_split_result.json, station_list_result.json"
+  },
+  "label_route": {
+    "source": "NOAA HTF daily product, field minFlag (the publisher's own minor-flood days)",
+    "correction": "our reduction of 6-minute maxima overcounted flood days by ~20% against NOAA's own counts on 2024 (113-114 vs 94 over four stations); NOAA's own flags matched exactly, station by station",
+    "evidence": "code/label_route_check.py, label_route_result.json",
+    "note": "A label that disagrees with the publisher's own product has to be justified, and there is no reason to ship one. Our own reduction overcounted by about 20%."
+  },
+  "datum": {
+    "requirement": "MUST use datum=STND. The published nos_minor threshold is in the station datum and the metadata API does not declare a datum. Comparing MLLW-referenced heights to nos_minor silently yields zero positives at every station; see measurements.datum_trap_measured.",
+    "measured": {
+      "purpose": "Regression fixture for NOAA CO-OPS datum handling. Recorded so a future change cannot silently reintroduce the MLLW-vs-threshold bug, which produced zero positives at every station.",
+      "recorded_on": "2026-09-18",
+      "rule": "Compare observed water levels to the published NOS flood thresholds using datum=STND. The MDAPI floodlevels response carries no datum field, and datum=MLLW makes the comparison silently fail.",
+      "station": {
+        "id": "8443970",
+        "name": "Boston, MA",
+        "product": "hourly_height",
+        "units": "english",
+        "time_zone": "gmt"
+      },
+      "thresholds_ft": {
+        "nos_minor": 15.85,
+        "nos_moderate": 16.73,
+        "nos_major": 18.04,
+        "nws_minor": 16.03
+      },
+      "cases": [
+        {
+          "name": "bomb-cyclone record tide",
+          "window": "2018-01-03..2018-01-05",
+          "why": "Boston's documented record tide. Any datum handling that denies flooding here is wrong.",
+          "expected_exceeds_nos_minor": true,
+          "datums": {
+            "MLLW": {
+              "peak_ft": 15.022,
+              "peak_time": "2018-01-04 18:00",
+              "rows": 72
+            },
+            "STND": {
+              "peak_ft": 18.547,
+              "peak_time": "2018-01-04 18:00",
+              "rows": 72
+            }
+          }
+        },
+        {
+          "name": "2025 annual maximum",
+          "window": "2025-01-01..2025-12-31",
+          "why": "The highest tide of the station-year used for the base-rate measurement.",
+          "expected_exceeds_nos_minor": true,
+          "datums": {
+            "MLLW": {
+              "peak_ft": 12.374,
+              "peak_time": "2025-11-08 18:00",
+              "rows": 8760
+            },
+            "STND": {
+              "peak_ft": 15.899,
+              "peak_time": "2025-11-08 18:00",
+              "rows": 8760
+            }
+          }
+        }
+      ],
+      "external_validation": {
+        "source": "https://api.tidesandcurrents.noaa.gov/dpapi/prod/webapi/htf/htf_annual.json?station=8443970",
+        "claim": "NOAA's authoritative annual product reports minCount 2 for 2025, matching the STND reconstruction (2 exceeding days) and contradicting the MLLW one (0).",
+        "checked_on": "2026-09-18",
+        "station_year": 2025,
+        "noaa_minCount": 2
+      },
+      "peak_tolerance_ft": 0.05
+    },
+    "evidence": "code/datum_check.py, datum_regression.json"
+  },
+  "threshold_decision": {
+    "decision": "the published physical nos_minor threshold is retained",
+    "why": "it is the quantity coastal flood statements are actually issued against; it is not replaced with a per-station quantile chosen to balance the classes"
+  },
+  "baseline": {
+    "command": "sh baseline/reproduce_baseline.sh ./task both",
+    "job": "noaa-baseline-002",
+    "levels": {
+      "temporal": {
+        "eval_auc": 0.8633,
+        "contract_ok": true,
+        "rows": {
+          "train": 697373,
+          "eval": 89038,
+          "holdout": 88841
+        }
+      },
+      "station_disjoint": {
+        "eval_auc": 0.869,
+        "contract_ok": true,
+        "rows": {
+          "train": 461580,
+          "eval": 29930,
+          "holdout": 29930
+        }
+      }
+    },
+    "runner_files_unmodified": true,
+    "note": "The benchmark's own train.py and validate.py, copied verbatim and shipped here. Measured on the corrected artifact, fetched from staging rather than rebuilt: the artifact is already gated, and these are the numbers the release carries. The superseded artifact's pair (0.8638 / 0.8688) is kept in the candidate record.",
+    "independent_reproduction": {
+      "note": "the earlier clean-room reproduction ran against the superseded artifact; a new consumer check must run against these bytes before the package claims it",
+      "superseded": {
+        "recorded": {
+          "temporal": 0.8638,
+          "station_disjoint": 0.8688
+        },
+        "reproduced": {
+          "temporal": 0.8651,
+          "station_disjoint": 0.8687
+        }
+      }
+    },
+    "dependencies": "pandas 2.3.3, numpy 2.5.3, xgboost 3.4.1, scikit-learn 1.9.1"
+  },
+  "persistence_calibration": {
+    "command": "python3 code/persistence_baseline.py --fetch (eval split only; no training)",
+    "why": "the honest floor: what a single stock feature achieves with no learning at all",
+    "levels": {
+      "temporal": {
+        "best_single_feature": "margin_ft",
+        "best_single_feature_auc": 0.8265,
+        "full_model_auc": 0.8638,
+        "headroom": 0.0373
+      },
+      "station_disjoint": {
+        "best_single_feature": "margin_ft",
+        "best_single_feature_auc": 0.8454,
+        "full_model_auc": 0.8688,
+        "headroom": 0.0234
+      }
+    },
+    "accuracy_trap": "the plain rule 'yesterday exceeded the threshold' agrees with the label about 96% of the time while scoring 0.63 AUC, because only ~2% of days are positive. Accuracy would flatter a useless rule, which is why the contract scores AUC."
+  }
+}
