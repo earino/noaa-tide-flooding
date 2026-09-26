@@ -29,8 +29,8 @@ the workspace an evaluated agent is given.
 
 1. `python3 get_dataset.py --dest ./task` - downloads the release assets, verifies them against
    `SHA256SUMS`, and restores the layout.
-2. `sh baseline/reproduce_baseline.sh ./task both` - expect **temporal 0.8638** and
-   **station_disjoint 0.8688** eval AUC.
+2. `sh baseline/reproduce_baseline.sh ./task both` - expect **temporal 0.8633** and
+   **station_disjoint 0.8690** eval AUC.
 
 The exact command, the expected values and the values actually obtained on the published bytes are
 recorded in `MANIFEST.json` (`measurements.baseline`). The runner's own output is the evidence; no

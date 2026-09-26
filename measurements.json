@@ -183,9 +183,17 @@
       }
     },
     "runner_files_unmodified": true,
-    "note": "The benchmark's own train.py and validate.py, copied verbatim and shipped here. Measured on the corrected artifact, fetched from staging rather than rebuilt: the artifact is already gated, and these are the numbers the release carries. The superseded artifact's pair (0.8638 / 0.8688) is kept in the candidate record.",
+    "note": "The benchmark's own train.py and validate.py, copied verbatim and shipped here. Measured on the corrected artifact, fetched from staging rather than rebuilt: the artifact is already gated, and these are the numbers the release carries. The superseded artifact's pair (0.8638 / 0.8688) is kept in the candidate record and below.",
     "independent_reproduction": {
-      "note": "the earlier clean-room reproduction ran against the superseded artifact; a new consumer check must run against these bytes before the package claims it",
+      "note": "two clean-room reproductions, one against the superseded artifact and one against the published bytes; both are kept rather than averaged",
+      "published": {
+        "job": "noaa-consumer-003",
+        "release": 396698120,
+        "temporal": 0.8633,
+        "station_disjoint": 0.869,
+        "verdict": "the independent run and the recorded measurement agree to the digit on these bytes",
+        "evidence": ".factory/noaa-consumer-003/result.json and reports/baseline-*.log"
+      },
       "superseded": {
         "recorded": {
           "temporal": 0.8638,
@@ -216,6 +224,12 @@
         "headroom": 0.0234
       }
     },
-    "accuracy_trap": "the plain rule 'yesterday exceeded the threshold' agrees with the label about 96% of the time while scoring 0.63 AUC, because only ~2% of days are positive. Accuracy would flatter a useless rule, which is why the contract scores AUC."
+    "accuracy_trap": "the plain rule 'yesterday exceeded the threshold' agrees with the label about 96% of the time while scoring 0.63 AUC, because only ~2% of days are positive. Accuracy would flatter a useless rule, which is why the contract scores AUC.",
+    "source": "the superseded artifact's eval split (job noaa-003, staging release 392230750); identical rows and positives to the released splits, a few observation values revised, so these single-feature figures are carried over rather than re-measured on the released bytes",
+    "headroom_against_released_pair": {
+      "temporal": 0.0368,
+      "station_disjoint": 0.0236,
+      "how": "released eval AUC (0.8633 / 0.8690) minus the floor above; approximate, because the floor was measured on the superseded split"
+    }
   }
 }

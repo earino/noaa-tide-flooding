@@ -1,0 +1,105 @@
+{
+  "release_tag": "v2026.09",
+  "destinations": {
+    "github": {
+      "repo": "earino/noaa-tide-flooding",
+      "release_id": 396698120,
+      "private": false,
+      "verified": true,
+      "verified_at": "2026-09-25T17:09:22+00:00",
+      "verified_by": "anonymous client: repository page 200, release page 200, release asset ranged GET 206; digests re-read from the API match the manifest",
+      "note": "Public since 2026-09-25 after explicit operator authorisation.",
+      "release_tag": "v2026.09",
+      "files_verified": [
+        "station_disjoint/meta.json",
+        "station_disjoint/private/holdout.csv",
+        "station_disjoint/public/eval.csv",
+        "station_disjoint/public/train.csv",
+        "station_disjoint/quality.json",
+        "temporal/meta.json",
+        "temporal/private/holdout.csv",
+        "temporal/public/eval.csv",
+        "temporal/public/train.csv",
+        "temporal/quality.json"
+      ]
+    },
+    "huggingface": {
+      "repo": "earino/noaa-tide-flooding",
+      "revision": "v2026.09",
+      "private": false,
+      "verified": true,
+      "verified_at": "2026-09-25T17:09:22+00:00",
+      "verified_by": "anonymous client: Hub API reports private false, data file ranged GET 206 at main; hf-publish --verify ok",
+      "note": "Public since 2026-09-25 after explicit operator authorisation. Tag v2026.09 and main both resolve to 6940e976.",
+      "files_verified": [
+        "station_disjoint/meta.json",
+        "station_disjoint/private/holdout.csv",
+        "station_disjoint/public/eval.csv",
+        "station_disjoint/public/train.csv",
+        "station_disjoint/quality.json",
+        "temporal/meta.json",
+        "temporal/private/holdout.csv",
+        "temporal/public/eval.csv",
+        "temporal/public/train.csv",
+        "temporal/quality.json",
+        "DATA_DICTIONARY.md",
+        "LICENSE-CC0-1.0.txt",
+        "LICENSE-MIT.txt",
+        "LICENSE.md",
+        "LOADING.md",
+        "MANIFEST.json",
+        "README.md",
+        "SHA256SUMS",
+        "VERIFICATION.md",
+        "measurements.json"
+      ]
+    }
+  },
+  "artifact_version": "fb49f932c7b4ea5ab532c20f7dce59a7d733de925d1e172054ff1d38abe1eeed",
+  "sync": "Deterministic release work from one manifest: per-file uploads verify digests and skip anything already matching, with bounded retries. Not a recurring model-driven comparison of two copies.",
+  "licensing": {
+    "policy": "config/licensing-policy.json",
+    "declaration": "candidates/noaa-tide-flooding/license.json",
+    "code_spdx": "MIT",
+    "compilation_spdx": "CC0-1.0",
+    "source_spdx": "LicenseRef-Public-Domain",
+    "rule": "CC0 is not a blanket override of upstream terms; each dataset uses terms compatible with its sources."
+  },
+  "publication": {
+    "published": true,
+    "authorised_by": "operator, explicit authorisation recorded in candidates/noaa-tide-flooding/record.json",
+    "authorised_on": "2026-09-25",
+    "anonymous_proof": {
+      "file": ".factory/noaa-anonymous-proof.json",
+      "method": "no Authorization header, no token, no cookie jar",
+      "all_public": true,
+      "checked": "the release's SHA256SUMS digest for temporal/public/eval.csv matches the bytes served by both the GitHub release asset and the Hub resolve URL; the largest asset answered a ranged read 206 on both"
+    },
+    "evidence": {
+      "github": {
+        "repo": "earino/noaa-tide-flooding",
+        "release_id": 396698120,
+        "tag": "v2026.09"
+      },
+      "huggingface": {
+        "repo": "earino/noaa-tide-flooding",
+        "revision_at_publication": "6940e97645759c330acc485b6444504b0cef5ace",
+        "revision_after_documentation_refresh": "9ff7f0e7b6dd3353df9708ec9344b754efcd722d",
+        "private": false,
+        "gated": false,
+        "note": "documents-only refreshes advance the revision and move the tag; no asset byte changes"
+      }
+    },
+    "site": {
+      "catalog": "https://earino.github.io/dataset-factory-site/catalog.json",
+      "page": "https://earino.github.io/noaa-tide-flooding/",
+      "version_page": "https://earino.github.io/noaa-tide-flooding/versions/v2026.09/",
+      "catalog_repository": "earino/dataset-factory-site",
+      "catalog_commit": "5bdf869a2be794aa2cddc22baf02cbefec23a057",
+      "verified_at": "2026-09-26T20:57:54+00:00",
+      "status": "verified",
+      "checked": "from an unauthenticated client: the catalogue lists the dataset as a release, and both the page and its version page answer 200 and link the GitHub release, the Hub repository and its v2026.09 tree, naming artifact version fb49f932c7b4ea5a",
+      "known_gap": "the catalogue's limitations bullet still states the superseded headroom (+0.037/+0.023) while the shipped documents say +0.0368/+0.0236; the corrected editorial is site_revision 2 and its publication plan awaits operator approval"
+    }
+  }
+}

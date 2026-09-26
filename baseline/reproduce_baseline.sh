@@ -44,5 +44,5 @@ for LEVEL in $LIST; do
 done
 
 echo
-echo "Compare against the recorded values in MANIFEST.json: temporal 0.8638, station_disjoint 0.8688."
+echo "Compare against the recorded values in MANIFEST.json: temporal 0.8633, station_disjoint 0.8690."
 echo "Both are eval AUC from the runner's own output, on the published bytes."

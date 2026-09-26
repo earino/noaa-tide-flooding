@@ -25,7 +25,7 @@ Two levels, each a complete task instance: **temporal** (all 122 stations, disjo
 | `day_of_year` | Feature. Calendar position of the target day (seasonal signal). |
 | `threshold_rank` | Feature. The station's threshold ranked among the frozen 122 - a station's general exposure. |
 | `observed_max_ft` | The target day's maximum observed water level. **This is the label source and must never be used as a feature** - the gate tests that it is absent from what a model sees. |
-| `late` | **Label.** 1 when the target day's maximum observed water level exceeded the station's published minor threshold, 0 otherwise. |
+| `minor_flood` | **Label.** 1 when the target day's maximum observed water level exceeded the station's published minor threshold, 0 otherwise. |
 
 ## Splits
 

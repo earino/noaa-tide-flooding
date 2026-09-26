@@ -53,10 +53,12 @@ runner's input contract. A number quoted from an artifact the gate has not passe
 sh baseline/reproduce_baseline.sh ./task both
 ```
 
-Expect **temporal ~0.864** and **station_disjoint ~0.869** eval AUC from the runner's own output.
-The recorded values are 0.8638 and 0.8688; an independent clean-room reproduction on the published
-bytes gave 0.8651 and 0.8687. The runner's training is not bit-reproducible (xgboost with default
-threading on identical bytes), so the last decimal moves between runs. The artifact digests do not
+Expect **temporal ~0.863** and **station_disjoint ~0.869** eval AUC from the runner's own output.
+The recorded values are 0.8633 and 0.8690, and the independent clean-room reproduction on the
+published bytes (`noaa-consumer-003`, release 396698120) returned that same pair. The runner's
+training is not bit-reproducible (xgboost with default threading on identical bytes), so the last
+decimal moves between runs - the earlier 2026-09-20 pass, against the superseded artifact, gave
+0.8651 and 0.8687. The artifact digests do not
 move, and `measurements.baseline.independent_reproduction` records both pairs. The runner files are the benchmark's, copied verbatim; their digests are
 in `baseline/README.md` and `MANIFEST.json`, and they match what the benchmark holds.
 

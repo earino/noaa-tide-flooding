@@ -1,8 +1,8 @@
 # NOAA tide flooding prediction dataset
 
-**Version 2026.09** · artifact `8896c4423c53cb14…` (temporal), `e6aff23f394ddfe4…` (station-disjoint)
+**Version 2026.09** · artifact `bb051dc304a4ee63…` (temporal), `92297a5b62f86b29…` (station-disjoint)
 
-**Status: private.** Prepared for review. Publication requires explicit authorisation.
+**Status: public since 2026-09-25**, published after explicit operator authorisation - [dataset website](https://earino.github.io/noaa-tide-flooding/versions/v2026.09/) · [GitHub release](https://github.com/earino/noaa-tide-flooding/releases/tag/v2026.09) · [Hugging Face](https://huggingface.co/datasets/earino/noaa-tide-flooding)
 
 ## What this is
 
@@ -38,18 +38,18 @@ Baseline, through the benchmark's own `train.py`/`validate.py` copied verbatim:
 
 | level | eval AUC | rows (train/eval/holdout) |
 | --- | --- | --- |
-| temporal | **0.8638** | 697,373 / 89,038 / 88,841 |
-| station_disjoint | **0.8688** | 461,580 / 29,930 / 29,930 |
+| temporal | **0.8633** | 697,373 / 89,038 / 88,841 |
+| station_disjoint | **0.8690** | 461,580 / 29,930 / 29,930 |
 
 The station-disjoint level scores the same as the temporal one **on stations the model never saw**,
 so the signal is not station-specific memorisation.
 
 **And the floor, measured without training:** a single stock feature - yesterday's maximum against
-the station's own threshold - already reaches **0.8265**
-(temporal) and **0.8454** (station-disjoint). The
-trained model's real headroom is **+0.0373** and
-**+0.0234**. This is published because a reviewer should see it, not
-discover it. See `measurements.persistence_calibration`.
+the station's own threshold - already reaches **0.8265** (temporal) and **0.8454** (station-disjoint),
+so the trained model's headroom is about **+0.0368** and **+0.0236**. This is published because a
+reviewer should see it, not discover it. The floor was measured on the superseded artifact's eval
+split, which carries the same rows and positives as the released one; see
+`measurements.persistence_calibration`.
 
 About **2% of station-days are positive**, and a constant "no flood" answer agrees with the label
 about 96% of the time. Score AUC, not accuracy.
@@ -76,12 +76,12 @@ nine more, flat because GitHub rejects `/` in asset names. `get_dataset.py` rest
 ```bash
 python3 get_dataset.py --dest ./task
 sh baseline/reproduce_baseline.sh ./task both
-# recorded: 0.8638 (temporal) and 0.8688 (station-disjoint); an independent
-# reproduction on the published bytes gave 0.8651 and 0.8687 - the runner's
-# training is not bit-reproducible, so read these as the same result, not a constant
+# recorded: 0.8633 (temporal) and 0.8690 (station-disjoint); the independent
+# clean-room reproduction on the published bytes returned the same pair - the
+# runner's training is not bit-reproducible, so read either as one result
 ```
 
-The repository is private, so a credential is needed: the `gh` CLI, or `GITHUB_TOKEN`.
+The release is public, so nothing here needs a credential: `get_dataset.py` fetches the assets anonymously.
 
 ## Licence, attribution and provenance
 

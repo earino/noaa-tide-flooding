@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """How much of the baseline's AUC is just persistence?
 
-The full-model baseline scored 0.8638 (temporal) and 0.8688 (station-disjoint) on the eval split.
+The full-model baseline scored 0.8638 (temporal) and 0.8688 (station-disjoint) on the eval split
+of the superseded artifact; the released artifact scores 0.8633 and 0.8690 (job noaa-baseline-002,
+reproduced by noaa-consumer-003).
 But the strongest feature is yesterday's maximum against the station's own threshold, and flood days
 arrive in runs, so a model that has learned almost nothing may still score well. This measures the
 floor: what a *single stock feature* achieves, with no training at all.
@@ -24,7 +26,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 CACHE = HERE / "eval_cache"
 RESULT = HERE / "persistence_baseline_result.json"
-STAGING_RELEASE = 392230750  # job-noaa-003: the accepted artifact
+STAGING_RELEASE = 392230750  # the superseded artifact (job noaa-003): the split this floor measured
 SPLITS = {"temporal": "output/extract/temporal/public/eval.csv",
           "station_disjoint": "output/extract/station_disjoint/public/eval.csv"}
 
@@ -111,8 +113,10 @@ def main():
     result = {"question": "how much of the baseline's AUC is persistence rather than prediction",
               "method": "single stock features and a plain 'yesterday exceeded' rule, no training; "
                         "rank-based AUC; the eval split only",
-              "source": f"staging release {STAGING_RELEASE} (job-noaa-003), public/eval.csv per level",
+              "source": f"staging release {STAGING_RELEASE} (the superseded artifact, job noaa-003), "
+                      f"public/eval.csv per level",
               "levels": {}}
+    # That artifact's recorded pair; the released pair is 0.8633 / 0.8690 by the same measurement.
     full = {"temporal": 0.8638, "station_disjoint": 0.8688}
     for level in ("temporal", "station_disjoint"):
         measured = measure(level, CACHE / f"{level}.eval.csv")
