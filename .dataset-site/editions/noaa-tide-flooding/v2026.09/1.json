@@ -1,0 +1,140 @@
+{
+  "artifact_version": "fb49f932c7b4ea5ab532c20f7dce59a7d733de925d1e172054ff1d38abe1eeed",
+  "assets": {
+    "station_disjoint-meta.json": {
+      "bytes": 867,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/station_disjoint-meta.json",
+      "hf_path": "station_disjoint/meta.json",
+      "sha256": "752bf619ffdced446e95250d9787150b93224397b4f09d20db60f41e051fc86a"
+    },
+    "station_disjoint-private-holdout.csv": {
+      "bytes": 4228360,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/station_disjoint-private-holdout.csv",
+      "hf_path": "station_disjoint/private/holdout.csv",
+      "sha256": "37d772620231806f3aaf7025961d136c91febda3b82b7fe3442180874602c827"
+    },
+    "station_disjoint-public-eval.csv": {
+      "bytes": 4229477,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/station_disjoint-public-eval.csv",
+      "hf_path": "station_disjoint/public/eval.csv",
+      "sha256": "be50109320c4af5a925d9f34fedeb6905aed675986ddc9f33c59bd9ac0ba1705"
+    },
+    "station_disjoint-public-train.csv": {
+      "bytes": 64636168,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/station_disjoint-public-train.csv",
+      "hf_path": "station_disjoint/public/train.csv",
+      "sha256": "d7d2bff29c71680962f4421d239121e63beac242b600dd0c23c9b77ac046ce3c"
+    },
+    "station_disjoint-quality.json": {
+      "bytes": 3793,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/station_disjoint-quality.json",
+      "hf_path": "station_disjoint/quality.json",
+      "sha256": "6cc116dd9d17576d02b1a5138e863f0f0d28df9a31f4d71fdf2593fe22f067ee"
+    },
+    "temporal-meta.json": {
+      "bytes": 750,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/temporal-meta.json",
+      "hf_path": "temporal/meta.json",
+      "sha256": "2f4e3052728c69dd07836d34e3c3cfab80811905d4f974ec0ae018e4a08dacc4"
+    },
+    "temporal-private-holdout.csv": {
+      "bytes": 12475947,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/temporal-private-holdout.csv",
+      "hf_path": "temporal/private/holdout.csv",
+      "sha256": "89db2e79b60a7185db3e5b937e3b2d29fcbceab016e85c789473c8ac2e104d51"
+    },
+    "temporal-public-eval.csv": {
+      "bytes": 12507815,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/temporal-public-eval.csv",
+      "hf_path": "temporal/public/eval.csv",
+      "sha256": "a2d733a8297294a14f9c64b5f9182a274a954b41dcefd411ca6ef00dc74191d3"
+    },
+    "temporal-public-train.csv": {
+      "bytes": 97931048,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/temporal-public-train.csv",
+      "hf_path": "temporal/public/train.csv",
+      "sha256": "60854702933b12cc0909f846bf062016830be189297012021340543c1560e339"
+    },
+    "temporal-quality.json": {
+      "bytes": 3795,
+      "download": "https://github.com/earino/noaa-tide-flooding/releases/download/v2026.09/temporal-quality.json",
+      "hf_path": "temporal/quality.json",
+      "sha256": "2448f84c683ff46168d8151d1d074433ae962f6ac8d78c14a813b0cca317405f"
+    }
+  },
+  "baseline": {
+    "metrics": {},
+    "scope": "one baseline only. No coding agent and no harness comparison was run, and none is implied."
+  },
+  "dataset": "noaa-tide-flooding",
+  "domain": "Coastal environment",
+  "github_repository": "earino/noaa-tide-flooding",
+  "hf_repository": "earino/noaa-tide-flooding",
+  "licenses": {
+    "attribution": "NOAA National Ocean Service, Center for Operational Oceanographic Products and Services (CO-OPS), verified water level observations and flood thresholds, https://tidesandcurrents.noaa.gov/, accessed 2026-09-18",
+    "citation": "NOAA CO-OPS. Verified daily maximum water level observations (product daily_max_min) and minor flood thresholds (station metadata API) for 122 NOS stations, 2006-2025. Retrieved 2026-09-18 from https://api.tidesandcurrents.noaa.gov/. Public Domain. Derived dataset: NOAA tide flooding prediction dataset, version 2026.09.",
+    "code": "MIT",
+    "compilation_scope": "Our contribution: the frozen station list, the row selection, the derived binary label, the temporal and station-disjoint partitions, the feature construction and the packaging. Does not cover or relicense NOAA's data.",
+    "data_compilation": "CC0-1.0",
+    "source_data": "LicenseRef-Public-Domain"
+  },
+  "limitations": [
+    "A derived research dataset from NOAA CO-OPS public-domain data, labelled as derived - not an official NOAA, NOS or NWS product, and not a flood warning or forecast service.",
+    "Headroom over a single unlearned feature is narrow (+0.037 and +0.023). Recorded in measurements.json rather than left to be discovered.",
+    "About 2% of station-days are positive. Accuracy is misleading on this task by a wide margin.",
+    "The holdout is labelled and downloadable. Keep its labels outside the evaluated agent's workspace during an evaluation."
+  ],
+  "post": {
+    "paragraphs": [
+      "122 NOS stations, 2006-2025, 2,440 station-years of verified water levels: will a station's maximum observed water level exceed its own published minor flood threshold tomorrow? NOAA publishes the observations, the verified maxima and the annual counts, so access is not the contribution - the frozen panel, the observations-only feature contract and the leakage gate are.",
+      "The release carries two levels, each a complete task instance. The temporal level is the ordinary panel split. The station-disjoint level holds 41 stations out of training entirely, and it is the point of the dataset: it asks whether a model learned something transferable rather than one station's local habits. It scores the same on stations it has never seen.",
+      "The numbers are published with their floor. The baseline reaches 0.8633 (temporal) and 0.8690 (station-disjoint); a single unlearned feature - yesterday's maximum against the station's own threshold - already reaches about 0.83 and 0.85. The headroom is narrow, and a reviewer should see that here rather than discover it. Only about 2% of station-days are positive, so a constant answer agrees with the label 96% of the time: score AUC, never accuracy."
+    ],
+    "title": "A prediction task from NOAA's tide gauges"
+  },
+  "qualification": {
+    "gate_version": "1.3.0",
+    "result": "PASSED - 32 checks per level, 0 failed, on both full artifacts, on the worker"
+  },
+  "record_sha256": "69cebde0cce101cbcf5c9fe2c043e9ce6993319312525bfd448a604740beec70",
+  "release_date": "2026-09-25",
+  "release_tag": "v2026.09",
+  "schema_version": 1,
+  "site_revision": 1,
+  "source": {
+    "name": "NOAA CO-OPS verified water levels and flood thresholds",
+    "url": "https://tidesandcurrents.noaa.gov/"
+  },
+  "splits": {
+    "station_disjoint-eval": {
+      "rows": 29930
+    },
+    "station_disjoint-holdout": {
+      "rows": 29930
+    },
+    "station_disjoint-train": {
+      "rows": 461580
+    },
+    "temporal-eval": {
+      "rows": 89038
+    },
+    "temporal-holdout": {
+      "rows": 88841
+    },
+    "temporal-train": {
+      "rows": 697373
+    }
+  },
+  "summary": "Predict whether a tide gauge's daily maximum observed water level will exceed its published minor flood threshold tomorrow - from observations alone.",
+  "task_type": "binary-classification",
+  "title": "NOAA tide flooding",
+  "urls": {
+    "catalog": "https://earino.github.io/dataset-factory-site/",
+    "github": "https://github.com/earino/noaa-tide-flooding",
+    "github_release": "https://github.com/earino/noaa-tide-flooding/releases/tag/v2026.09",
+    "huggingface": "https://huggingface.co/datasets/earino/noaa-tide-flooding",
+    "huggingface_version": "https://huggingface.co/datasets/earino/noaa-tide-flooding/tree/v2026.09",
+    "version": "https://earino.github.io/noaa-tide-flooding/versions/v2026.09/",
+    "website": "https://earino.github.io/noaa-tide-flooding/"
+  }
+}
