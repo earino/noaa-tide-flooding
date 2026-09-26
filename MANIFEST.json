@@ -300,6 +300,13 @@
     }
   },
   "package_files": {
+    ".dataset-site/LICENSE-MIT.txt": "200f782f6b8bc23b926ea774cbacb4147826b3b2b59200917d8dc5ec68159535",
+    ".dataset-site/build.py": "1ab5792b1d5cf0ba0a08a240a103c9462963bcb56a15b3bf7ee112c65bcb7218",
+    ".dataset-site/config.json": "45f09e3c9653d353381b7acd2ba627a2029e416f17a5c0dec1bcb2fc448c25c2",
+    ".dataset-site/editions/noaa-tide-flooding/v2026.09/1.json": "9ccc61534d5774e4e65abf041ca3e099422c38df972ff907dbd2945c0c325fcc",
+    ".dataset-site/owner.json": "aabd1b42b396a038d662e60e61047d718688c9387f088fc8df48002eac89aa24",
+    ".dataset-site/records/noaa-tide-flooding/v2026.09.json": "9ccc61534d5774e4e65abf041ca3e099422c38df972ff907dbd2945c0c325fcc",
+    ".github/workflows/dataset-site.yml": "3986e6e7dad806a9b41c9881e91166ce1e4890ac0053ad48a06dbc138bd0a27d",
     "DATA_DICTIONARY.md": "2e6e23c188e4eec1f34aa07d23f85d0a572c3fbf032eaad7cfe858fca11f962c",
     "LICENSE-CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
     "LICENSE-MIT.txt": "56b932ff064e5da113ae10175c8546325f64f26e1ece71683ffcbf8b2304fe1c",
