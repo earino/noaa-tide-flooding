@@ -28,9 +28,9 @@
       "revision": "v2026.09",
       "private": false,
       "verified": true,
-      "verified_at": "2026-09-25T17:09:22+00:00",
+      "verified_at": "2026-09-26T21:02:37+00:00",
       "verified_by": "anonymous client: Hub API reports private false, data file ranged GET 206 at main; hf-publish --verify ok",
-      "note": "Public since 2026-09-25 after explicit operator authorisation. Tag v2026.09 and main both resolve to 6940e976.",
+      "note": "Public since 2026-09-25 after explicit operator authorisation. Documents-only refreshes advance the revision and move the tag; main and v2026.09 both resolve to 40a189e1 at the time of this record. No asset byte has changed since publication.",
       "files_verified": [
         "station_disjoint/meta.json",
         "station_disjoint/private/holdout.csv",
@@ -41,18 +41,11 @@
         "temporal/private/holdout.csv",
         "temporal/public/eval.csv",
         "temporal/public/train.csv",
-        "temporal/quality.json",
-        "DATA_DICTIONARY.md",
-        "LICENSE-CC0-1.0.txt",
-        "LICENSE-MIT.txt",
-        "LICENSE.md",
-        "LOADING.md",
-        "MANIFEST.json",
-        "README.md",
-        "SHA256SUMS",
-        "VERIFICATION.md",
-        "measurements.json"
-      ]
+        "temporal/quality.json"
+      ],
+      "missing": [],
+      "size_mismatch": [],
+      "loading_check": "run by the worker job and recorded in its report"
     }
   },
   "artifact_version": "fb49f932c7b4ea5ab532c20f7dce59a7d733de925d1e172054ff1d38abe1eeed",
@@ -84,10 +77,10 @@
       "huggingface": {
         "repo": "earino/noaa-tide-flooding",
         "revision_at_publication": "6940e97645759c330acc485b6444504b0cef5ace",
-        "revision_after_documentation_refresh": "9ff7f0e7b6dd3353df9708ec9344b754efcd722d",
         "private": false,
         "gated": false,
-        "note": "documents-only refreshes advance the revision and move the tag; no asset byte changes"
+        "note": "documents-only refreshes advance the revision and move the tag; no asset byte changes, every revision still carries the same artifact version and the same SHA256SUMS digests",
+        "revision_now": "40a189e16e5341ee93e3e7d03d375a522c077d0a"
       }
     },
     "site": {
