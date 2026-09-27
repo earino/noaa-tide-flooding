@@ -67,13 +67,23 @@ def dataset_body(r):
     docs = "".join(link(r["urls"]["github"] + '/blob/' + r["release_tag"] + '/' + path, label) for path, label in (
         ("DATA_DICTIONARY.md", "Data dictionary"), ("REPRODUCE.md", "Reproduction"),
         ("VERIFICATION.md", "Verification"), ("LICENSE.md", "Licence and attribution")))
+    # The loading command is generated, not written into the template: a dataset with more than one
+    # config (one per level) has to name it, or the command a reader copies raises "Config name is
+    # missing". The names come from the record, which derives them from the same rule as the Hub card.
+    configs = r.get("configs") or []
+    snippet = "from datasets import load_dataset"
+    if configs:
+        snippet += "".join("\nds = load_dataset(%r, %r, revision=%r)"
+                           % (r["hf_repository"], name, r["release_tag"]) for name in configs)
+    else:
+        snippet += "\nds = load_dataset(%r, revision=%r)" % (r["hf_repository"], r["release_tag"])
     return f'''<div class="eyebrow">{esc(r['domain'])} · {esc(r['task_type'])} · {esc(r['release_tag'])}</div>
 <h1>{esc(r['title'])}</h1><p class="intro">{esc(r['summary'])}</p>{navigation(r)}
 <div class="grid"><div class="stat"><strong>{rows:,}</strong>rows</div><div class="stat"><strong>{len(r['splits'])}</strong>documented splits</div>{metrics}</div>
 <h2>About this release</h2>{''.join('<p>'+esc(p)+'</p>' for p in r['post']['paragraphs'])}
 <h2>Splits</h2><div class="scroll"><table><thead><tr><th>Split</th><th>Rows</th><th>Positive labels</th></tr></thead><tbody>{split_rows}</tbody></table></div>
 <h2>Qualification and baseline</h2><p>{esc(r['qualification']['result'])} Gate {esc(r['qualification']['gate_version'])}.</p><p>{esc(r['baseline']['scope'])}</p>
-<h2>Use this version</h2><pre><code>{esc('from datasets import load_dataset' + chr(10) + 'ds = load_dataset(' + repr(r['hf_repository']) + ', revision=' + repr(r['release_tag']) + ')')}</code></pre>
+<h2>Use this version</h2><pre><code>{esc(snippet)}</code></pre>
 <p>The version links and checksums identify this artifact. Exclude the labelled holdout from the agent's workspace when running an evaluation.</p>
 <nav class="links" aria-label="Documentation">{docs}</nav>
 <h2>Files and checksums</h2><div class="scroll"><table><thead><tr><th>Download</th><th>Bytes</th><th>SHA-256</th></tr></thead><tbody>{asset_rows}</tbody></table></div>
