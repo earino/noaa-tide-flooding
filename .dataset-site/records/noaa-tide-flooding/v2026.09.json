@@ -87,15 +87,17 @@
   },
   "limitations": [
     "A derived research dataset from NOAA CO-OPS public-domain data, labelled as derived - not an official NOAA, NOS or NWS product, and not a flood warning or forecast service.",
-    "Headroom over a single unlearned feature is narrow (+0.0368 and +0.0236). Recorded in measurements.json rather than left to be discovered.",
     "About 2% of station-days are positive. Accuracy is misleading on this task by a wide margin.",
-    "The holdout is labelled and downloadable. Keep its labels outside the evaluated agent's workspace during an evaluation."
+    "The holdout is labelled and downloadable. Keep its labels outside the evaluated agent's workspace during an evaluation.",
+    "No claim of real-time or operational forecasting validity: historical feature and label availability at the prediction instant is assumed from a current source snapshot, not verified against release vintages.",
+    "Documentation correction: the build assigns NOAA's official minor-flood flag to the day after the measured maximum; the earlier description of a same-day flag was wrong. The frozen data and tags are unchanged.",
+    "The labeled eval split is development/validation. Final holdout scoring requires prediction-time access restrictions; the original scorer provided the complete feature frame. Downloadable holdout labels must stay outside model development."
   ],
   "post": {
     "paragraphs": [
-      "122 NOS stations, 2006-2025, 2,440 station-years of verified water levels: will a station's maximum observed water level exceed its own published minor flood threshold tomorrow? NOAA publishes the observations, the verified maxima and the annual counts, so access is not the contribution - the frozen panel, the observations-only feature contract and the leakage gate are.",
-      "The release carries two levels, each a complete task instance. The temporal level is the ordinary panel split. The station-disjoint level holds 41 stations out of training entirely, and it is the point of the dataset: it asks whether a model learned something transferable rather than one station's local habits. It scores the same on stations it has never seen.",
-      "The numbers are published with their floor. The baseline reaches 0.8633 (temporal) and 0.8690 (station-disjoint); a single unlearned feature - yesterday's maximum against the station's own threshold - already reaches about 0.83 and 0.85. The headroom is narrow, and a reviewer should see that here rather than discover it. Only about 2% of station-days are positive, so a constant answer agrees with the label 96% of the time: score AUC, never accuracy."
+      "The frozen panel covers 122 NOS stations. For row date D, the build attaches NOAA’s official minor-flood flag for D+1. It is not defined by simply thresholding the raw maximum. Current documentation corrects the earlier same-day and raw-threshold descriptions; original data and tags remain unchanged.",
+      "Two split designs are available: temporal and station-disjoint. The latter excludes its evaluation stations from training. Recorded baseline comparisons describe those particular splits; they do not certify future operational performance or establish an optimal honest-model limit.",
+      "The baseline scripts use ordinary train-fitted XGBoost and do not implement the demonstrated reverse-history attack. The original scoring interface nevertheless supplied a complete feature frame. Interpret recorded results with the documented vintage, timing and access limitations, and use AUC alongside class-balance information."
     ],
     "title": "A prediction task from NOAA's tide gauges"
   },
@@ -103,11 +105,11 @@
     "gate_version": "1.3.0",
     "result": "PASSED - 32 checks per level, 0 failed, on both full artifacts, on the worker"
   },
-  "record_sha256": "d4d78fa476ba3e81964ca0250c3fe49bac2dc5a9f59f7b5b5fbccf1e8b8091cb",
+  "record_sha256": "5027554e37517be7038e6069ac83ccf9017a16e439f08f142c4e67132da2580d",
   "release_date": "2026-09-25",
   "release_tag": "v2026.09",
   "schema_version": 1,
-  "site_revision": 4,
+  "site_revision": 5,
   "source": {
     "name": "NOAA CO-OPS verified water levels and flood thresholds",
     "url": "https://tidesandcurrents.noaa.gov/"
@@ -132,7 +134,45 @@
       "rows": 697373
     }
   },
-  "summary": "Predict whether a tide gauge's daily maximum observed water level will exceed its published minor flood threshold tomorrow - from observations alone.",
+  "suitability": {
+    "artifact_version": "fb49f932c7b4ea5ab532c20f7dce59a7d733de925d1e172054ff1d38abe1eeed",
+    "corrections": [
+      "For row date D, observed_max_ft is the measurement on D; margin_ft and trailing summaries use observations preceding D (through D-1 when consecutive). The label is NOAA’s official minor-flood flag for D+1. It is not the same-day flag and is not defined by simply thresholding observed_max_ft. Historical verification/publication timing remains unverified.",
+      "The original dictionary says carry columns are dropped. The bundled template excludes only target and id_columns; observed_max_ft and threshold_ft are therefore available to that baseline. This does not by itself expose its own D+1 label, but the documentation must not claim those columns were excluded."
+    ],
+    "cross_row_audit": {
+      "scope": "Both split designs (temporal, station-disjoint) tested; temporal 88,915/89,038 covered AUC 0.99929 with 423 binary mismatches; station-disjoint 29,889/29,930 AUC 0.99922 with 191; a D+2 margin_ft variant still ranks ~0.9993, so deleting the obvious column is not a fix Holdout recovery was not tested by this audit.",
+      "status": "recovery_demonstrated"
+    },
+    "dataset": "noaa-tide-flooding",
+    "decision": "retain_restricted",
+    "evaluation_access": "chronological",
+    "historical_availability": "assumed",
+    "limitations": [
+      "Near-perfect future-outcome ranking in both split designs (see cross_row_audit scope).",
+      "Dictionary/build day-definition conflict: release/noaa-tide-flooding/code/build.py assigns the official minFlag to date+1 while DATA_DICTIONARY.md describes the target-day value.",
+      "One calendar week straddles train/eval in each design (244 temporal, 82 station-disjoint eval rows).",
+      "Historical feature/label availability is assumed from current snapshots, not verified against release vintages.",
+      "The current scorer passes the complete feature frame; isolation is not mechanically enforced."
+    ],
+    "release_tag": "v2026.09",
+    "reviewed_on": "2026-10-24",
+    "schema_version": 1,
+    "selection": "unverified",
+    "summary": "Retained for retrospective model-development research with documented timing limitations. Later evaluation rows expose earlier outcomes; predictions require restricted access.",
+    "supported_uses": [
+      "Retrospective train/validation model-development experiments under the documented timing and selection limitations",
+      "Final evaluation only under a protocol that isolates holdout data from development and prevents later rows influencing earlier predictions"
+    ],
+    "training_label_timing": "unverified",
+    "unsupported_uses": [
+      "Claims of verified real-time or operational forecasting validity",
+      "Treating development/validation scores as untouched final-test results",
+      "Forecasting scores from unrestricted cross-row access to this artifact"
+    ],
+    "vintage": "current_snapshot"
+  },
+  "summary": "Retrospective classification of NOAA’s official minor-flood flag for day D+1 using a station-day row dated D, under documented timing and access restrictions.",
   "task_type": "binary-classification",
   "title": "NOAA tide flooding",
   "urls": {
